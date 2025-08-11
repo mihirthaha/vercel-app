@@ -11,7 +11,17 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 
 export default function SurveyPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [answers, setAnswers] = useState({
+  const [answers, setAnswers] = useState<{
+    primaryGoal: string;
+    secondaryGoals: string[];
+    ageGroup: string;
+    timeCommitment: string;
+    advancedComfort: string;
+    budget: string;
+    applications: string;
+    healthNotes: string[];
+    [key: string]: string | string[]; // Add index signature
+  }>({
     primaryGoal: "",
     secondaryGoals: [],
     ageGroup: "",
