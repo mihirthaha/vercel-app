@@ -128,7 +128,7 @@ export default function LandingPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
           >
-            Learn about your skull
+            Transform Your Skull
           </motion.h1>
           
           <motion.div
@@ -160,8 +160,7 @@ export default function LandingPage() {
                 style={{ opacity: aboutTextOpacity }}
                 className="text-lg md:text-xl text-gray-600 text-center mb-16 leading-relaxed"
               >
-                A comprehensive educational platform dedicated to understanding cranial anatomy 
-                through interactive surveys and cutting-edge research.
+                A comprehensive educational platform providing customized stacks to morph into your dream self.
               </motion.p>
               
               <motion.div 
@@ -188,8 +187,8 @@ export default function LandingPage() {
                   <div className="bg-gray-50 rounded-3xl p-6 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
                     <Search className="h-8 w-8" />
                   </div>
-                  <h3 className="text-lg font-medium mb-2">Interactive</h3>
-                  <p className="text-gray-600 text-sm">3D visualizations and personalized assessments</p>
+                  <h3 className="text-lg font-medium mb-2">Customized</h3>
+                  <p className="text-gray-600 text-sm">Fully customized towards YOU and your needs</p>
                 </motion.div>
                 
                 <motion.div 
@@ -224,8 +223,7 @@ export default function LandingPage() {
                 style={{ opacity: surveyTextOpacity }}
                 className="text-lg md:text-xl text-gray-600 mb-12 leading-relaxed"
               >
-                Take our comprehensive skull assessment survey to discover insights 
-                about cranial structure and contribute to ongoing research.
+                Ready to change your bones?
               </motion.p>
               <motion.div
                 style={{ opacity: surveyButtonOpacity }}
