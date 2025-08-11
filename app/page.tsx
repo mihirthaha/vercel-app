@@ -1,103 +1,316 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useRef } from "react"
+import { Button } from "@/components/ui/button"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Skull, ArrowDown, Brain, Shield, Search } from "lucide-react"
+import { motion, useScroll, useTransform } from "framer-motion"
+
+export default function LandingPage() {
+  // Refs for each section
+  const heroRef = useRef(null)
+  const aboutRef = useRef(null)
+  const surveyRef = useRef(null)
+  const contactRef = useRef(null)
+
+  // Scroll progress for hero
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  })
+
+  // Scroll progress for about section
+  const { scrollYProgress: aboutProgress } = useScroll({
+    target: aboutRef,
+    offset: ["start end", "end start"],
+  })
+
+  // Scroll progress for survey section
+  const { scrollYProgress: surveyProgress } = useScroll({
+    target: surveyRef,
+    offset: ["start end", "end start"],
+  })
+
+  // Scroll progress for contact section
+  const { scrollYProgress: contactProgress } = useScroll({
+    target: contactRef,
+    offset: ["start end", "end start"],
+  })
+
+  // Transform values for hero - completely fade out before about section appears
+  const heroOpacity = useTransform(heroProgress, [0, 0.3, 0.4], [1, 1, 0])
+  
+  // About section - only fade in after hero is completely gone, NO Y movement
+  const aboutTitleOpacity = useTransform(aboutProgress, [0.15, 0.25, 0.65, 0.75], [0, 1, 1, 0])
+  const aboutTextOpacity = useTransform(aboutProgress, [0.18, 0.28, 0.62, 0.72], [0, 1, 1, 0])
+  const aboutCardsOpacity = useTransform(aboutProgress, [0.21, 0.31, 0.59, 0.69], [0, 1, 1, 0])
+  
+  // Survey section animations - only after about is completely gone, NO Y movement
+  const surveyTitleOpacity = useTransform(surveyProgress, [0.15, 0.25, 0.65, 0.75], [0, 1, 1, 0])
+  const surveyTextOpacity = useTransform(surveyProgress, [0.18, 0.28, 0.62, 0.72], [0, 1, 1, 0])
+  const surveyButtonOpacity = useTransform(surveyProgress, [0.21, 0.31, 0.59, 0.69], [0, 1, 1, 0])
+  
+  // Contact section animations - only after survey is completely gone, NO Y movement
+  const contactTitleOpacity = useTransform(contactProgress, [0.15, 0.25, 0.8, 1], [0, 1, 1, 1])
+  const contactTextOpacity = useTransform(contactProgress, [0.18, 0.28, 0.8, 1], [0, 1, 1, 1])
+  const contactButtonOpacity = useTransform(contactProgress, [0.21, 0.31, 0.8, 1], [0, 1, 1, 1])
+
+  // Navbar scroll visibility
+  const { scrollY } = useScroll()
+  const navOpacity = useTransform(scrollY, [0, 300], [0, 1])
+
+  // Smooth scroll handler
+  const scrollToSection = (e, sectionId) => {
+    e.preventDefault()
+    const element = document.querySelector(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="bg-white text-black overflow-x-hidden">
+      {/* Fixed Navigation Bar */}
+      <motion.nav 
+        style={{ opacity: navOpacity }}
+        className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100"
+      >
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Skull className="h-5 w-5" />
+              <span className="font-medium">BoneStack</span>
+            </div>
+            <div className="hidden md:flex items-center space-x-8">
+              <a 
+                href="#about" 
+                onClick={(e) => scrollToSection(e, '#about')}
+                className="text-sm hover:text-gray-600 transition-colors"
+              >
+                About
+              </a>
+              <a 
+                href="#survey" 
+                onClick={(e) => scrollToSection(e, '#survey')}
+                className="text-sm hover:text-gray-600 transition-colors"
+              >
+                Survey
+              </a>
+              <a 
+                href="#contact" 
+                onClick={(e) => scrollToSection(e, '#contact')}
+                className="text-sm hover:text-gray-600 transition-colors"
+              >
+                Contact
+              </a>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </motion.nav>
+
+      {/* Hero Section - Fixed Position */}
+      <section ref={heroRef} className="h-screen fixed inset-0 flex flex-col items-center justify-center">
+        <motion.div 
+          style={{ opacity: heroOpacity }}
+          className="text-center px-6"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <Skull className="h-32 w-32 mx-auto mb-8 stroke-[0.5]" />
+          </motion.div>
+          
+          <motion.h1 
+            className="text-2xl md:text-3xl font-light tracking-wide"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          >
+            Learn about your skull
+          </motion.h1>
+          
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.5 }}
+            className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
+          >
+            <ArrowDown className="h-5 w-5 animate-bounce text-gray-400" />
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Spacer for hero */}
+      <div className="h-screen"></div>
+
+      {/* About Section - Fixed Position */}
+      <section id="about" ref={aboutRef} className="h-screen relative">
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="container mx-auto px-6">
+            <div className="max-w-4xl mx-auto">
+              <motion.h2 
+                style={{ opacity: aboutTitleOpacity }}
+                className="text-4xl md:text-5xl font-light mb-8 text-center"
+              >
+                About BoneStack
+              </motion.h2>
+              <motion.p 
+                style={{ opacity: aboutTextOpacity }}
+                className="text-lg md:text-xl text-gray-600 text-center mb-16 leading-relaxed"
+              >
+                A comprehensive educational platform dedicated to understanding cranial anatomy 
+                through interactive surveys and cutting-edge research.
+              </motion.p>
+              
+              <motion.div 
+                style={{ opacity: aboutCardsOpacity }}
+                className="grid grid-cols-1 md:grid-cols-3 gap-12"
+              >
+                <motion.div 
+                  className="text-center"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <div className="bg-gray-50 rounded-3xl p-6 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                    <Brain className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-lg font-medium mb-2">Educational</h3>
+                  <p className="text-gray-600 text-sm">Detailed anatomical models and expert insights</p>
+                </motion.div>
+                
+                <motion.div 
+                  className="text-center"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <div className="bg-gray-50 rounded-3xl p-6 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                    <Search className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-lg font-medium mb-2">Interactive</h3>
+                  <p className="text-gray-600 text-sm">3D visualizations and personalized assessments</p>
+                </motion.div>
+                
+                <motion.div 
+                  className="text-center"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <div className="bg-gray-50 rounded-3xl p-6 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                    <Shield className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-lg font-medium mb-2">Research-Based</h3>
+                  <p className="text-gray-600 text-sm">Latest findings in cranial morphology studies</p>
+                </motion.div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Survey Section - Fixed Position */}
+      <section id="survey" ref={surveyRef} className="h-screen relative">
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="container mx-auto px-6 text-center">
+            <div className="max-w-2xl mx-auto">
+              <motion.h2 
+                style={{ opacity: surveyTitleOpacity }}
+                className="text-4xl md:text-5xl font-light mb-8"
+              >
+                Start Your Journey
+              </motion.h2>
+              <motion.p 
+                style={{ opacity: surveyTextOpacity }}
+                className="text-lg md:text-xl text-gray-600 mb-12 leading-relaxed"
+              >
+                Take our comprehensive skull assessment survey to discover insights 
+                about cranial structure and contribute to ongoing research.
+              </motion.p>
+              <motion.div
+                style={{ opacity: surveyButtonOpacity }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="lg" 
+                  className="bg-black text-white hover:bg-gray-800 px-12 py-6 text-lg rounded-full"
+                >
+                  Start Survey
+                </Button>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section with Footer */}
+      <section id="contact" ref={contactRef} className="min-h-screen flex flex-col">
+        <div className="flex-1 flex items-center justify-center py-20">
+          <div className="container mx-auto px-6 text-center">
+            <div className="max-w-2xl mx-auto">
+              <motion.h2 
+                style={{ opacity: contactTitleOpacity }}
+                className="text-4xl md:text-5xl font-light mb-8"
+              >
+                Contact
+              </motion.h2>
+              <motion.p 
+                style={{ opacity: contactTextOpacity }}
+                className="text-lg md:text-xl text-gray-600 mb-12 leading-relaxed"
+              >
+                Interested in learning more about BoneStack or contributing to our research? 
+                We'd love to hear from you.
+              </motion.p>
+              <motion.div
+                style={{ opacity: contactButtonOpacity }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="lg" 
+                  className="bg-black text-white hover:bg-gray-800 px-12 py-6 text-lg rounded-full"
+                >
+                  Get in Touch
+                </Button>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+
+        {/* Educational Disclaimer */}
+        <div className="container mx-auto px-6 pb-12">
+          <Alert className="bg-gray-50 border-gray-200 rounded-2xl max-w-3xl mx-auto">
+            <AlertDescription className="text-center text-gray-600 py-2">
+              📚 Educational content only. Not a substitute for professional medical advice. 
+              Always consult with qualified healthcare providers for health-related concerns.
+            </AlertDescription>
+          </Alert>
+        </div>
+
+        {/* Footer */}
+        <footer className="border-t border-gray-200 py-8">
+          <div className="container mx-auto px-6">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="flex items-center space-x-2 mb-4 md:mb-0">
+                <Skull className="h-4 w-4" />
+                <span className="text-sm text-gray-600">© {new Date().getFullYear()} BoneStack</span>
+              </div>
+              <div className="flex space-x-6">
+                <a href="#" className="text-sm text-gray-600 hover:text-black transition-colors">
+                  Privacy
+                </a>
+                <a href="#" className="text-sm text-gray-600 hover:text-black transition-colors">
+                  Terms
+                </a>
+                <a href="#" className="text-sm text-gray-600 hover:text-black transition-colors">
+                  Research Ethics
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </section>
     </div>
-  );
+  )
 }
