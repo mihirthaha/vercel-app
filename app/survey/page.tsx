@@ -31,6 +31,7 @@ export default function SurveyPage() {
     useRef(null),
     useRef(null),
     useRef(null),
+    useRef(null),
     useRef(null)
   ]
 
@@ -56,22 +57,31 @@ export default function SurveyPage() {
       type: "radio",
       icon: <Target className="h-6 w-6" />,
       options: [
-        { value: "growth", label: "🦴 Growth Enhancement Path", desc: "aimed at overall skeletal extension" },
-        { value: "support", label: "🛡 Structural Support Path", desc: "aimed at strengthening and resilience" },
-        { value: "cranial", label: "🪞 Cranial Optimization Path", desc: "aimed at balance and proportions" },
-        { value: "wellness", label: "🌱 Wellness Maintenance Path", desc: "aimed at general upkeep and longevity" }
+        { value: "growth", label: "Growth Enhancement Path", emoji: "🦴", desc: "Overall skeletal extension" },
+        { value: "support", label: "Structural Support Path", emoji: "🛡", desc: "Strengthening and resilience" },
+        { value: "cranial", label: "Cranial Optimization Path", emoji: "🪞", desc: "Balance and proportions" },
+        { value: "wellness", label: "Wellness Maintenance Path", emoji: "🌱", desc: "General upkeep and longevity" }
       ]
     },
     {
       id: "secondaryGoals",
       title: "Do you have any secondary goals?",
-      subtitle: "Choose all that apply",
+      subtitle: "Choose all that apply (1/2)",
       type: "checkbox",
       options: [
         { value: "height", label: "Increase standing height" },
         { value: "cheekbone", label: "Enhance cheekbone prominence" },
         { value: "lowerJaw", label: "Increase forward projection of lower jaw" },
-        { value: "upperJaw", label: "Improve upper jaw prominence" },
+        { value: "upperJaw", label: "Improve upper jaw prominence" }
+      ]
+    },
+    {
+      id: "secondaryGoals",
+      title: "Do you have any secondary goals?",
+      subtitle: "Choose all that apply (2/2)",
+      type: "checkbox",
+      continued: true,
+      options: [
         { value: "ribcage", label: "Increase ribcage/upper body frame projection" },
         { value: "density", label: "Increase overall bone density/mass" },
         { value: "posture", label: "General posture and skeletal symmetry" },
@@ -83,9 +93,8 @@ export default function SurveyPage() {
       title: "What's your age group?",
       type: "radio",
       options: [
-        { value: "under18", label: "Under 18", desc: "educational suggestions only" },
-        { value: "18-25", label: "18-25" },
-        { value: "26-35", label: "26-35" },
+        { value: "under25", label: "Under 25" },
+        { value: "25-35", label: "25-35" },
         { value: "36-45", label: "36-45" },
         { value: "46+", label: "46+" }
       ]
@@ -96,9 +105,9 @@ export default function SurveyPage() {
       type: "radio",
       icon: <Calendar className="h-6 w-6" />,
       options: [
-        { value: "short", label: "🟢 Short-term boost", desc: "3-6 months" },
-        { value: "medium", label: "🟡 Medium program", desc: "6-12 months" },
-        { value: "long", label: "🔴 Long-term transformation", desc: "1 year+" }
+        { value: "short", label: "Short-term boost", emoji: "🟢", desc: "3-6 months" },
+        { value: "medium", label: "Medium program", emoji: "🟡", desc: "6-12 months" },
+        { value: "long", label: "Long-term transformation", emoji: "🔴", desc: "1 year+" }
       ]
     },
     {
@@ -106,9 +115,9 @@ export default function SurveyPage() {
       title: "How comfortable are you with advanced approaches?",
       type: "radio",
       options: [
-        { value: "level1", label: "Level 1", desc: "Only basic, low-risk, proven methods" },
-        { value: "level2", label: "Level 2", desc: "Some moderate, targeted interventions" },
-        { value: "level3", label: "Level 3", desc: "Open to advanced and cutting-edge approaches" }
+        { value: "level1", label: "Level 1", desc: "Basic, low-risk methods" },
+        { value: "level2", label: "Level 2", desc: "Moderate interventions" },
+        { value: "level3", label: "Level 3", desc: "Advanced approaches" }
       ]
     },
     {
@@ -118,9 +127,9 @@ export default function SurveyPage() {
       icon: <DollarSign className="h-6 w-6" />,
       options: [
         { value: "0", label: "$0/month" },
-        { value: "1-100", label: "💵 $1-100/month" },
-        { value: "100-300", label: "💵💵 $100-300/month" },
-        { value: "300+", label: "💵💵💵 $300+/month" }
+        { value: "1-100", label: "$1-100/month", emoji: "💵" },
+        { value: "100-300", label: "$100-300/month", emoji: "💵💵" },
+        { value: "300+", label: "$300+/month", emoji: "💵💵💵" }
       ]
     },
     {
@@ -128,9 +137,9 @@ export default function SurveyPage() {
       title: "What kind of applications are you most comfortable with?",
       type: "radio",
       options: [
-        { value: "oral", label: "Oral or nutritional-based" },
-        { value: "wearable", label: "Wearable/mechanical support" },
-        { value: "external", label: "External/treatment-based", desc: "e.g., non-invasive tech" },
+        { value: "oral", label: "Oral/Nutritional" },
+        { value: "wearable", label: "Wearable/Mechanical" },
+        { value: "external", label: "External/Treatment", desc: "Non-invasive tech" },
         { value: "none", label: "No preference" }
       ]
     },
@@ -144,7 +153,6 @@ export default function SurveyPage() {
         { value: "cardiovascular", label: "Cardiovascular condition" },
         { value: "bone", label: "Bone-related disorder" },
         { value: "hormonal", label: "Hormonal/endocrine condition" },
-        { value: "pregnancy", label: "Currently pregnant or planning pregnancy" },
         { value: "none", label: "None of the above" }
       ]
     }
@@ -175,6 +183,15 @@ export default function SurveyPage() {
     // Handle submission logic here
   }
 
+  // Calculate actual question number (accounting for split questions)
+  const getQuestionNumber = (index: number) => {
+    if (index <= 1) return 1 // First two pages are question 1
+    if (index === 2) return 2 // Third page is question 2 part 2
+    return index - 1 // Rest are normal
+  }
+
+  const totalQuestions = 8 // Count actual questions, not pages
+
   return (
     <div className="bg-white text-black min-h-screen">
       {/* Progress Bar */}
@@ -182,7 +199,7 @@ export default function SurveyPage() {
         <div className="h-1 bg-gray-100">
           <motion.div 
             className="h-full bg-black transition-all duration-500"
-            style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+            style={{ width: `${(getQuestionNumber(currentQuestion) / totalQuestions) * 100}%` }}
           />
         </div>
         <div className="container mx-auto px-6 py-4">
@@ -192,7 +209,7 @@ export default function SurveyPage() {
               <span className="font-medium">BoneStack Survey</span>
             </div>
             <span className="text-sm text-gray-600">
-              Question {currentQuestion + 1} of {questions.length}
+              Question {getQuestionNumber(currentQuestion)} of {totalQuestions}
             </span>
           </div>
         </div>
@@ -204,48 +221,59 @@ export default function SurveyPage() {
       {/* Questions */}
       {questions.map((question, index) => (
         <section 
-          key={question.id}
+          key={`${question.id}-${index}`}
           ref={questionRefs[index]}
           className="min-h-screen flex items-center justify-center py-20"
         >
           <motion.div
             style={{ opacity: opacities[index] }}
-            className="container mx-auto px-6 max-w-3xl"
+            className="container mx-auto px-6 max-w-5xl"
           >
             <div className="text-center mb-12">
-              {question.icon && (
+              {question.icon && !question.continued && (
                 <div className="mx-auto w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mb-6">
                   {question.icon}
                 </div>
               )}
-              <h2 className="text-3xl md:text-4xl font-light mb-2">
-                {question.title}
-              </h2>
+              {!question.continued && (
+                <h2 className="text-3xl md:text-4xl font-light mb-2">
+                  {question.title}
+                </h2>
+              )}
               {question.subtitle && (
                 <p className="text-gray-600">{question.subtitle}</p>
               )}
             </div>
 
-            <div className="space-y-4">
+            <div className={`grid ${question.options.length === 1 ? 'grid-cols-1 max-w-md mx-auto' : 'grid-cols-1 md:grid-cols-2'} gap-6`}>
               {question.type === "radio" ? (
                 <RadioGroup
                   value={answers[question.id] as string}
                   onValueChange={(value) => handleRadioChange(question.id, value)}
+                  className={`grid ${question.options.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-6`}
                 >
                   {question.options.map(option => (
                     <Card 
                       key={option.value}
-                      className="p-6 cursor-pointer transition-all hover:shadow-md border-gray-200 rounded-2xl"
+                      className="p-8 cursor-pointer transition-all hover:shadow-lg border-gray-200 rounded-3xl min-h-[200px] flex flex-col"
                       onClick={() => handleRadioChange(question.id, option.value)}
                     >
-                      <div className="flex items-start space-x-3">
+                      {/* Space reserved for future image */}
+                      <div className="h-16 mb-4 bg-gray-50 rounded-xl flex items-center justify-center">
+                        {option.emoji && (
+                          <span className="text-3xl">{option.emoji}</span>
+                        )}
+                        {/* Image placeholder - you can add images here later */}
+                      </div>
+                      
+                      <div className="flex items-start space-x-3 flex-1">
                         <RadioGroupItem value={option.value} className="mt-1" />
                         <div className="flex-1">
-                          <Label className="text-base font-medium cursor-pointer">
+                          <Label className="text-lg font-medium cursor-pointer">
                             {option.label}
                           </Label>
                           {option.desc && (
-                            <p className="text-sm text-gray-600 mt-1">{option.desc}</p>
+                            <p className="text-sm text-gray-600 mt-2">{option.desc}</p>
                           )}
                         </div>
                       </div>
@@ -253,17 +281,22 @@ export default function SurveyPage() {
                   ))}
                 </RadioGroup>
               ) : (
-                <div className="space-y-4">
+                <>
                   {question.options.map(option => (
                     <Card 
                       key={option.value}
-                      className="p-6 cursor-pointer transition-all hover:shadow-md border-gray-200 rounded-2xl"
+                      className="p-8 cursor-pointer transition-all hover:shadow-lg border-gray-200 rounded-3xl min-h-[200px] flex flex-col"
                       onClick={() => {
                         const isChecked = (answers[question.id] as string[]).includes(option.value)
                         handleCheckboxChange(question.id, option.value, !isChecked)
                       }}
                     >
-                      <div className="flex items-start space-x-3">
+                      {/* Space reserved for future image */}
+                      <div className="h-16 mb-4 bg-gray-50 rounded-xl">
+                        {/* Image placeholder */}
+                      </div>
+                      
+                      <div className="flex items-start space-x-3 flex-1">
                         <Checkbox
                           id={option.value}
                           checked={(answers[question.id] as string[]).includes(option.value)}
@@ -280,18 +313,18 @@ export default function SurveyPage() {
                         }}>
                           <Label 
                             htmlFor={option.value}
-                            className="text-base font-medium cursor-pointer"
+                            className="text-lg font-medium cursor-pointer"
                           >
                             {option.label}
                           </Label>
                           {option.desc && (
-                            <p className="text-sm text-gray-600 mt-1">{option.desc}</p>
+                            <p className="text-sm text-gray-600 mt-2">{option.desc}</p>
                           )}
                         </div>
                       </div>
                     </Card>
                   ))}
-                </div>
+                </>
               )}
             </div>
 
@@ -314,11 +347,6 @@ export default function SurveyPage() {
                 <Button
                   onClick={() => scrollToQuestion(index + 1)}
                   className="bg-black text-white hover:bg-gray-800 rounded-full px-8"
-                  disabled={
-                    question.type === "radio" 
-                      ? !answers[question.id] 
-                      : (answers[question.id] as string[]).length === 0
-                  }
                 >
                   Next
                   <ChevronRight className="h-4 w-4 ml-2" />
@@ -327,11 +355,6 @@ export default function SurveyPage() {
                 <Button
                   onClick={handleSubmit}
                   className="bg-black text-white hover:bg-gray-800 rounded-full px-8"
-                  disabled={
-                    question.type === "radio" 
-                      ? !answers[question.id] 
-                      : (answers[question.id] as string[]).length === 0
-                  }
                 >
                   Submit Survey
                 </Button>
