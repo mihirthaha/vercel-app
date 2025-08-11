@@ -60,7 +60,7 @@ export default function LandingPage() {
   const navOpacity = useTransform(scrollY, [0, 300], [0, 1])
 
   // Smooth scroll handler
-  const scrollToSection = (e, sectionId) => {
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     e.preventDefault()
     const element = document.querySelector(sectionId)
     if (element) {
