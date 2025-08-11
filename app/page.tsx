@@ -230,14 +230,14 @@ export default function LandingPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-              <a href="/survey"></a>
-                <Button 
-                  size="lg" 
-                  className="bg-black text-white hover:bg-gray-800 px-12 py-6 text-lg rounded-full"
-                >
-                  Start Survey
-                </Button>
-              </a>
+                <a href="/survey">
+                  <Button 
+                    size="lg" 
+                    className="bg-black text-white hover:bg-gray-800 px-12 py-6 text-lg rounded-full"
+                  >
+                    Start Survey
+                  </Button>
+                </a>
               </motion.div>
             </div>
           </div>
