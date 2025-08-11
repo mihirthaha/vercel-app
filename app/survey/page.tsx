@@ -59,7 +59,25 @@ export default function SurveyPage() {
     useTransform(progress, [0.15, 0.25, 0.65, 0.75], [0, 1, 1, 0])
   )
 
-  const questions = [
+  // Type definitions for questions
+  type Option = {
+    value: string;
+    label: string;
+    emoji?: string;
+    desc?: string;
+  }
+
+  type Question = {
+    id: string;
+    title: string;
+    subtitle?: string;
+    type: "radio" | "checkbox";
+    icon?: React.ReactNode;
+    continued?: boolean;
+    options: Option[];
+  }
+
+  const questions: Question[] = [
     {
       id: "primaryGoal",
       title: "What's your primary goal?",
