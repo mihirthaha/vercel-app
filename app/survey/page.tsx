@@ -135,7 +135,8 @@ export default function SurveyPage() {
       options: [
         { value: "short", label: "Short-term boost", emoji: "🟢", desc: "3-6 months" },
         { value: "medium", label: "Medium program", emoji: "🟡", desc: "6-12 months" },
-        { value: "long", label: "Long-term transformation", emoji: "🔴", desc: "1 year+" }
+        { value: "long", label: "Long-term transformation", emoji: "🔴", desc: "1 year+" },
+        { value: "flexible", label: "Flexible timing", emoji: "⚪", desc: "As needed" }
       ]
     },
     {
@@ -145,7 +146,8 @@ export default function SurveyPage() {
       options: [
         { value: "level1", label: "Level 1", desc: "Basic, low-risk methods" },
         { value: "level2", label: "Level 2", desc: "Moderate interventions" },
-        { value: "level3", label: "Level 3", desc: "Advanced approaches" }
+        { value: "level3", label: "Level 3", desc: "Advanced approaches" },
+        { value: "custom", label: "Custom", desc: "Tailored to my needs" }
       ]
     },
     {
@@ -273,12 +275,12 @@ export default function SurveyPage() {
               )}
             </div>
 
-            <div className={`grid ${question.options.length === 1 ? 'grid-cols-1 max-w-md mx-auto' : 'grid-cols-1 md:grid-cols-2'} gap-6`}>
+            <div className={`grid grid-cols-2 gap-6 max-w-4xl mx-auto`}>
               {question.type === "radio" ? (
                 <RadioGroup
                   value={answers[question.id] as string}
                   onValueChange={(value) => handleRadioChange(question.id, value)}
-                  className={`grid ${question.options.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-6`}
+                  className={`grid grid-cols-2 gap-6 max-w-4xl mx-auto`}
                 >
                   {question.options.map(option => (
                     <Card 
